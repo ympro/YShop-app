@@ -5,3 +5,4 @@ Open source B2C app based on React-Native!
 
 * React-native
 * Redux
+* react-navigation
