@@ -14,7 +14,6 @@ import Merchant from '../Merchant/ShopMerchant'
 import Mine from  '../Mine/ShopMine'
 import More from '../More/ShopMore'
 import TabBarItem from "../Main/TabBarItem";
-import HomeDetail from "../Home/ShopHomeDetail";
 
 type Props = {};
 export default class ShopHomeTab extends Component<Props> {
