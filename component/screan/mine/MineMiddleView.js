@@ -57,7 +57,7 @@ class InnerView extends Component{
         </TouchableOpacity>
     );
   }
-};
+}
 
 InnerView.propTypes = {};
 InnerView.defaultProps = {

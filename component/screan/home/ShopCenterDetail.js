@@ -1,7 +1,4 @@
 /**
- * Created by yanmeng on 2018/3/31.
- */
-/**
  * Sample React Native App
  * https://github.com/facebook/react-native
  * @flow
@@ -9,6 +6,7 @@
 
 import React, {Component} from 'react';
 import {
+  AppRegistry,
   StyleSheet,
   Text,
   View,
@@ -18,19 +16,12 @@ import {
   WebView
 } from 'react-native';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-  'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-  'Shake or press menu button for dev menu',
-});
-
 type Props = {};
-export default class Merchant extends Component<Props> {
+export default class Shop extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      detailUrl: 'https://www.baidu.com'
+      detailUrl: this.props.url + '?uuid=5C7B6342814C7B496D836A69C872202B5DE8DB689A2D777DFC717E10FC0B4271&utm_term=6.6&utm_source=AppStore&utm_content=5C7B6342814C7B496D836A69C872202B5DE8DB689A2D777DFC717E10FC0B4271&version_name=6.6&userid=160495643&utm_medium=iphone&lat=23.134709&utm_campaign=AgroupBgroupD100Ghomepage_shoppingmall_detailH0&token=b81UqRVf6pTL4UPLLBU7onkvyQoAAAAAAQIAACQVmmlv_Qf_xR-hBJVMtIlq7nYgStcvRiK_CHFmZ5Gf70DR47KP2VSP1Fu5Fc1ndA&lng=113.373890&f=iphone&ci=20&msid=0FA91DDF-BF5B-4DA2-B05D-FA2032F30C6C2016-04-04-08-38594'
     }
   }
 
@@ -38,7 +29,7 @@ export default class Merchant extends Component<Props> {
     return (
         <View style={styles.container}>
           {/*导航*/}
-          {/*{this.renderNavBar()}*/}
+          {this.renderNavBar()}
 
           <WebView
               automaticallyAdjustContentInsets={true}
@@ -59,19 +50,18 @@ export default class Merchant extends Component<Props> {
           <TouchableOpacity onPress={() => {
             this.props.navigator.pop()
           }} style={styles.leftViewStyle}>
-            <Image source={{uri: 'icon_shop_local'}} style={styles.navImageStyle}/>
+            <Image source={{uri: 'icon_camera_back_normal'}} style={styles.navImageStyle}/>
           </TouchableOpacity>
-          <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>商家</Text>
+          <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>购物中心详情</Text>
           <TouchableOpacity onPress={() => {
             alert('点了!')
           }} style={styles.rightViewStyle}>
-            <Image source={{uri: 'icon_shop_search'}} style={styles.navImageStyle}/>
+            <Image source={{uri: 'icon_mine_setting'}} style={styles.navImageStyle}/>
           </TouchableOpacity>
         </View>
     )
-  };
-}
-
+  }
+};
 
 const styles = StyleSheet.create({
   container: {

@@ -7,55 +7,178 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
-    Platform,
-    StyleSheet,
-    Text,
-    View
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+  Image,
+  Platform,
+  ScrollView,
+  Dimensions
 } from 'react-native';
 
+/**----导入外部的组件类---**/
+import HomeDetail from './HomeDetail';
+
+import TopView from './TopView';
+import MiddleView from './HomeMiddleView';
+import MiddleBottomView from './MiddleBottomView';
+import ShopCenter from './ShopCenter';
+import ShopCenterDetail from './ShopCenterDetail';
+import GeustYouLike from './GeustYouLike';
+
 const instructions = Platform.select({
-    ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-    android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
+  ios: 'Press Cmd+R to reload,\n' +
+  'Cmd+D or shake for dev menu',
+  android: 'Double tap R on your keyboard to reload,\n' +
+  'Shake or press menu button for dev menu',
 });
+const {width, height} = Dimensions.get('window');
 
 type Props = {};
 export default class Home extends Component<Props> {
-    render() {
-        return (
-            <View style={styles.container}>
-                <Text style={styles.welcome}>
-                    Welcome to React Native!
-                </Text>
-                <Text style={styles.instructions}>
-                    To get started, edit App.js
-                </Text>
-                <Text style={styles.instrinstructionsuctions}>
-                    {instructions}
-                </Text>
-            </View>
-        );
-    }
+  render() {
+    return (
+        <View style={styles.container}>
+          {/*首页的导航条*/}
+          {this.renderNavBar()}
+          {/*首页的主要内容*/}
+          <ScrollView>
+            {/*头部的View*/}
+            <TopView />
+            {/*中间的内容*/}
+            <MiddleView />
+            {/*中间下半部分的内容*/}
+            <MiddleBottomView
+                popTopHome={(data) => {
+                  this.pushToDetail(data)
+                }}
+            />
+            {/*购物中心*/}
+            <ShopCenter
+                popToHomeView={(url) => this.pushToShopCenterDetail(url)}
+            />
+
+            {/*猜你喜欢*/}
+            <GeustYouLike />
+
+          </ScrollView>
+        </View>
+    );
+  };
+
+  // 首页的导航条
+  renderNavBar() {
+    return (
+        <View style={styles.navBarStyle}>
+          {/*左边*/}
+          <TouchableOpacity onPress={() => {
+            this.pushToDetail()
+          }}>
+            <Text style={{color: 'white'}}>广州</Text>
+          </TouchableOpacity>
+          {/*中间*/}
+          <TextInput
+              placeholder="输入商家, 品类, 商圈"
+              style={styles.topInputStyle}
+          />
+          {/*右边*/}
+          <View style={styles.rightNavViewStyle}>
+            <TouchableOpacity onPress={() => {
+              alert('点击了')
+            }}>
+              <Image source={{uri: 'icon_homepage_message'}} style={styles.navRightImgStyle}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {
+              alert('点击了')
+            }}>
+              <Image source={{uri: 'icon_homepage_scan'}} style={styles.navRightImgStyle}/>
+            </TouchableOpacity>
+          </View>
+        </View>
+    )
+  };
+
+  // 跳转到购物中心详情页
+  pushToShopCenterDetail(url) {
+    this.props.navigator.push(
+        {
+          component: ShopCenterDetail, // 要跳转的版块
+          passProps: {'url': this.dealWithUrl(url)}
+        }
+    );
+  };
+
+  // 处理URL
+  dealWithUrl(url) {
+    return url.replace('imeituan://www.meituan.com/web/?url=', '');
+  };
+
+
+  // 跳转到二级界面
+  pushToDetail(data) {
+
+    // alert(data);
+
+    this.props.navigator.push(
+        {
+          component: HomeDetail, // 要跳转的版块
+          title: '详情页'
+        }
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-    },
+  navBarStyle: { // 导航条样式
+    height: Platform.OS == 'ios' ? 64 : 44,
+    backgroundColor: 'rgba(255,96,0,1.0)',
+
+    // 设置主轴的方向
+    flexDirection: 'row',
+    // 垂直居中 ---> 设置侧轴的对齐方式
+    alignItems: 'center',
+
+    // 设置主轴的对齐方式
+    justifyContent: 'space-around'
+  },
+
+  rightNavViewStyle: {
+    flexDirection: 'row',
+    // backgroundColor:'blue',
+    height: 64,
+    // 设置侧轴的对齐方式
+    alignItems: 'center'
+  },
+
+  topInputStyle: { // 设置输入框
+    width: width * 0.71,
+    height: Platform.OS == 'ios' ? 35 : 30,
+    backgroundColor: 'white',
+    marginTop: Platform.OS == 'ios' ? 18 : 0,
+
+    // 设置圆角
+    borderRadius: 17,
+
+    // 内左边距
+    paddingLeft: 10
+  },
+
+  navRightImgStyle: { // 设置图片的大小
+    width: Platform.OS == 'ios' ? 28 : 24,
+    height: Platform.OS == 'ios' ? 28 : 24
+  },
+
+  container: {
+    flex: 1,
+    backgroundColor: '#e8e8e8'
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  }
 });
